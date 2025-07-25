@@ -152,12 +152,13 @@ button:hover {
 
     input[type="text"],
     button {
-        width: 100%;
+        width: 95%;
     }
-
-    .button-group {
+    .todo{
         flex-direction: column;
     }
+
+
 }
 .checkbox-container {
     position: relative;

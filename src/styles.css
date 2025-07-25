@@ -119,7 +119,7 @@ button:hover {
 
 .save-btn {
     color: white;
-    padding: 0.5rem 0.8rem;
+    padding: 0.5rem ;
     font-size: 0.9rem;
     border: none;
     border-radius: 6px;
@@ -152,12 +152,18 @@ button:hover {
 
     input[type="text"],
     button {
-        width: 95%;
+        width: 90%;
     }
     .todo{
         flex-direction:row;
     }
-
+    .save-btn{
+        width: 10%;
+        padding: 0.5rem;
+    }
+    .Addbtn{
+        margin-left: 1rem;
+    }
 
 }
 .checkbox-container {

@@ -19,7 +19,7 @@ function TodoForm({ addTodo }) {
                 type="text"
                 placeholder="Add Task"
             />
-            <button>Add</button>
+            <button className="Addbtn">Add</button>
         </form>
     );
 }

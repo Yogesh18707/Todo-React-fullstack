@@ -155,7 +155,7 @@ button:hover {
         width: 95%;
     }
     .todo{
-        flex-direction: column;
+        flex-direction:row;
     }
 
 

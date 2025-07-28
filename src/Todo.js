@@ -21,7 +21,7 @@ function Todo({ todo, index, toggleCompleted, removeTodo, editTodo }) {
             <label className="checkbox-container">
                 <input
                     type="checkbox"
-                    checked={todo.complete}
+                    checked={todo.completed}
                     onChange={() => toggleCompleted(index)}
                 />
                 <span className="checkmark"></span>
@@ -41,8 +41,8 @@ function Todo({ todo, index, toggleCompleted, removeTodo, editTodo }) {
             ) : (
                 <span
                     onClick={() => toggleCompleted(index)}
-                    className={`todo-text ${todo.complete ? 'complete' : ''}`}
-                    style={{textDecoration : todo.complete ? 'line-through' : '' }}
+                    className={`todo-text ${todo.complete ? 'completed' : ''}`}
+                    style={{textDecoration : todo.completed ? 'line-through' : '' }}
                 >
           {todo.text}
         </span>

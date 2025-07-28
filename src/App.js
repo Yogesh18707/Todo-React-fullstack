@@ -19,15 +19,29 @@ function App(){
     const newTodos = [...todos,{text, completed: false , isEditing: false}];
     setTodos(newTodos);
   }
+
+
   const toggleCompleted = (index) => {
     const newTodos = [...todos];
     newTodos[index].complete =!newTodos[index].complete;
+
+    fetch(`http://localhost:5000/todos/${index}`,{
+      method: 'PUT',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(newTodos[index])
+    }).catch(err=> console.error("failed to update todo", err));
     setTodos(newTodos);
   };
+
+
   const removeTodo = (index) => {
     const newTodos = todos.filter((_,i) => i !==index);
     setTodos(newTodos);
-  }
+    fetch(`http://localhost:5000/todos/${index}`,{
+      method: 'DELETE',
+    }).catch(err=> console.error("failed to delete todo", err));
+  };
+
   const editTodo = (index, newText = null, toggleEdit = false) => {
     const updatedTodos = [...todos];
 
@@ -37,6 +51,11 @@ function App(){
       updatedTodos[index].text =newText;
       updatedTodos[index].isEditing = false;
     }
+    fetch(`http://localhost:5000/todos/${index}`,{
+      method: 'PUT',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(updatedTodos[index])
+    }).catch( err => console.error("failed to edit todo", err));
     setTodos(updatedTodos)
   };
   return (

@@ -31,7 +31,7 @@ function Todo({ todo, index, toggleCompleted, removeTodo, editTodo }) {
                 <>
                     <input
                         type="text"
-                        value={editValue}
+                        value={ editValue }
                         onChange={(e) => setEditValue(e.target.value)}
                         onKeyDown={(e) => e.key === 'Enter' && handleSave()}
                         className={`todo-input ${todo.complete ? 'completed' : ''}`}

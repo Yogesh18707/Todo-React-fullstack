@@ -3,7 +3,7 @@ import './styles.css';
 
 function Todo({ todo, index, toggleCompleted, removeTodo, editTodo }) {
     const [editValue, setEditValue] = useState(todo.text);
-    const [showInput, setShowInput] = useState(false); // Local state to toggle input
+    const [showInput, setShowInput] = useState(false);
 
     useEffect(() => {
         setEditValue(todo.text);

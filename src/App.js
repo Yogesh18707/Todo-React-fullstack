@@ -101,7 +101,7 @@ function App() {
   // View logic
   if (view === 'signup') {
     return (
-        <div className="app">
+        <div>
           <SignupForm onSignup={handleSignupSuccess} />
           <p style={{ textAlign: 'center' }}>
             Already have an account?{' '}

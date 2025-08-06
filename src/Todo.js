@@ -19,10 +19,8 @@ function Todo({ todo, index, toggleCompleted, removeTodo, editTodo }) {
     return (
         <>
             <header className="header">
-                <h2>📝 Todo App</h2>
             </header>
 
-            {/* Main Todo Item */}
             <div className="todo">
                 <label className="checkbox-container">
                     <input

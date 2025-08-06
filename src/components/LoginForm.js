@@ -1,50 +1,34 @@
-import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-function LoginForm({ onLogin, onForgotPassword }) {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+function LoginForm() {
+    const navigate = useNavigate();
 
-    const handleSubmit = async (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
-        const res = await fetch('http://localhost:5000/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password })
-        });
 
-        const data = await res.json();
-        if (res.ok && data.token && data.user) {
-            onLogin(data.token, data.user);
-        } else {
-            alert(data.message || 'Login failed');
+        try {
+            const res = await fetch("http://localhost:5000/api/auth/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username, password })
+            });
+
+            const data = await res.json();
+
+            if (res.ok) {
+                alert("Login successful");
+                navigate("/dashboard");  // 👈 change path to your target page
+            } else {
+                alert(data.message || "Login failed");
+            }
+        } catch (err) {
+            alert("Server error");
         }
     };
 
     return (
-        <form onSubmit={handleSubmit} className="auth-form">
-            <h2>Login</h2>
-            <input
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                required
-            />
-            <input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                required
-            />
-            <button type="submit">Login</button>
-            <p style={{ textAlign: 'center' }}>
-                <button type="button" onClick={onForgotPassword} className="forgot-btn">
-                    Forgot Password?
-                </button>
-            </p>
+        <form onSubmit={handleLogin}>
+            {/* your login form here */}
         </form>
     );
 }
-
-export default LoginForm;

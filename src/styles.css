@@ -373,6 +373,341 @@ button:hover {
     font-size: 0.9rem;
 }
 
+/* ===== Global Styles ===== */
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #f6d365, #fda085);
+    margin: 0;
+    padding: 0;
+}
+
+/* ===== App Container ===== */
+.app {
+    max-width: 500px;
+    margin: 40px auto;
+    background: #fff;
+    border-radius: 16px;
+    padding: 20px 25px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.app h1 {
+    text-align: center;
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* ===== Form ===== */
+form {
+    display: flex;
+    gap: 10px;
+}
+
+form input {
+    flex: 1;
+    padding: 10px 14px;
+    font-size: 16px;
+    border: 2px solid #fda085;
+    border-radius: 8px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+form input:focus {
+    border-color: #ff7e5f;
+    box-shadow: 0 0 8px rgba(255, 126, 95, 0.4);
+}
+
+form button {
+    padding: 10px 16px;
+    font-size: 16px;
+    background: #ff7e5f;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+form button:hover {
+    background: #eb6750;
+}
+
+/* ===== Todo List ===== */
+ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f9f9f9;
+    margin-bottom: 12px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    transition: transform 0.2s ease;
+}
+
+li:hover {
+    transform: translateY(-2px);
+}
+
+li input[type="checkbox"] {
+    margin-right: 10px;
+    transform: scale(1.2);
+}
+
+/* ===== Todo Text ===== */
+li span {
+    flex: 1;
+    font-size: 16px;
+    color: #444;
+}
+
+/* ===== Buttons ===== */
+li button {
+    margin-left: 8px;
+    padding: 6px 10px;
+    font-size: 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+li button:first-of-type {
+    background: #4cafef;
+    color: white;
+}
+
+li button:first-of-type:hover {
+    background: #399dd8;
+}
+
+li button:last-of-type {
+    background: #f44336;
+    color: white;
+}
+
+li button:last-of-type:hover {
+    background: #d32f2f;
+}
+
+.logout-btn {
+    padding: 8px 16px;
+    background: linear-gradient(135deg, #232526, #414345); /* dark gray gradient */
+    border: none;
+    border-radius: 6px;
+    color: #fff;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+    background: linear-gradient(135deg, #1f1f1f, #3a3a3a);
+    transform: translateY(-1px);
+}
+
+.logout-btn:active {
+    transform: translateY(1px);
+}
+/* Center the form in the viewport */
+/* Base styles */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    animation: fadeIn 1.2s ease-in-out;
+}
+
+/* Fade-in animation for the whole page */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Login form container with pop animation */
+.login-form {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 30px;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    width: 320px;
+    text-align: center;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    transform: translateY(20px);
+    opacity: 0;
+    animation: slideUp 0.8s ease forwards;
+}
+
+@keyframes slideUp {
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Heading animation */
+.login-form h2 {
+    margin-bottom: 20px;
+    font-size: 26px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    animation: fadeIn 1s ease 0.3s forwards;
+}
+
+/* Input fields */
+.login-form input {
+    width: 90%;
+    padding: 12px 14px;
+    margin-bottom: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: white;
+    font-size: 14px;
+    outline: none;
+    transition: border 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+.login-form input:focus {
+    border-color: #00c6ff;
+    box-shadow: 0 0 10px rgba(0, 198, 255, 0.7);
+    transform: scale(1.02);
+}
+
+/* Buttons container */
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+/* Login button */
+.login-btn {
+    flex: 1;
+    background: linear-gradient(135deg, #00c6ff, #0072ff);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.login-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 5px 20px rgba(0, 114, 255, 0.6);
+}
+
+/* Signup button */
+.signup-btn {
+    flex: 1;
+    background: linear-gradient(135deg, #ff512f, #dd2476);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.signup-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 5px 20px rgba(221, 36, 118, 0.6);
+}
+/* Signup/Login shared form styles */
+.auth-form {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 30px;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    width: 320px;
+    text-align: center;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    transform: translateY(20px);
+    opacity: 0;
+    animation: slideUp 0.8s ease forwards;
+}
+
+@keyframes slideUp {
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.auth-form h2 {
+    color: white; /* force white heading */
+    margin-bottom: 20px;
+    font-size: 26px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.auth-form input {
+    width: 90%;
+    padding: 12px 14px;
+    margin-bottom: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: white;
+    font-size: 14px;
+    outline: none;
+    transition: border 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+.auth-form input:focus {
+    border-color: #00c6ff;
+    box-shadow: 0 0 10px rgba(0, 198, 255, 0.7);
+    transform: scale(1.02);
+}
+
+.auth-form button {
+    background: linear-gradient(135deg, #ff512f, #dd2476);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.auth-form button:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 5px 20px rgba(221, 36, 118, 0.6);
+}
+
+
+
+
 
 
 

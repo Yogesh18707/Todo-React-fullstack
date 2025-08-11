@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function SignupForm({ onSignup }) {
     const [name, setName] = useState('');
-    const [email, setEmail] = useState(''); // Still unused unless your backend uses it
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -18,7 +20,6 @@ function SignupForm({ onSignup }) {
             const data = await res.json();
 
             if (res.ok && data.token && data.user) {
-                // ✅ Save to localStorage
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('username', data.user.username);
 
@@ -57,7 +58,17 @@ function SignupForm({ onSignup }) {
                 onChange={e => setPassword(e.target.value)}
                 required
             />
-            <button type="submit">Sign Up</button>
+
+            <div className="button-group">
+                <button type="submit" className="signup-btn">Sign Up</button>
+                <button
+                    type="button"
+                    className="login-btn"
+                    onClick={() => navigate('/login')}
+                >
+                    Login
+                </button>
+            </div>
         </form>
     );
 }

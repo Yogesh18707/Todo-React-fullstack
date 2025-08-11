@@ -8,9 +8,12 @@ const {
     deleteTodo
 } = require('../controllers/todoController');
 
+// Use :id instead of :index
 router.get('/', auth, getTodos);
 router.post('/', auth, createTodo);
-router.put('/:index', auth, updateTodo);
-router.delete('/:index', auth, deleteTodo);
+router.put('/:id', auth, updateTodo);      // ✅ updated
+router.delete('/:id', auth, deleteTodo);   // ✅ updated
+
+
 
 module.exports = router;

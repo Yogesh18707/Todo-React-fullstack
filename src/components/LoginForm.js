@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
+
 
 function LoginForm() {
     const [username, setUsername] = useState('');
+    console.log(username)
     const [password, setPassword] = useState('');
-    const navigate = useNavigate();
+    let navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -18,20 +20,38 @@ function LoginForm() {
 
             const data = await res.json();
 
-            if (res.ok) {
+            console.log('data',data)
+
+            if (data.token) {
                 localStorage.setItem("token", data.token);
-                navigate("/todos");
+                console.log('tests11111')
+
+                if (localStorage.getItem('token')){
+                    navigate("/todos");
+                    // const x = () =>{
+                    //     console.log('navigatekkkkk')
+                    //     document.href="/todos"
+                    //     // navigate("/todos")
+                    // }
+                    // x()
+                }
+
+                console.log('test333333333333333')
+
             } else {
-                alert(data.message || "Login failed");
+                console.error(data.message || "Login failed");
             }
         } catch (err) {
-            alert("Server error");
+           console.error("Server error");
         }
     };
 
     return (
+        <div>
+            <h1 style={{color:"white"}}>Welcome to the To-Do app</h1>
         <form onSubmit={handleLogin} className="login-form">
             <h2>Login</h2>
+
             <input
                 type="text"
                 placeholder="Username"
@@ -40,11 +60,12 @@ function LoginForm() {
                 required
             />
             <input
+                required
                 type="password"
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                required
+                autoComplete="off"
             />
 
             <div className="button-group">
@@ -58,6 +79,7 @@ function LoginForm() {
                 </button>
             </div>
         </form>
+        </div>
     );
 }
 

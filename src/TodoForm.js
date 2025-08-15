@@ -7,7 +7,6 @@ function TodoForm({addTodo}) {
         e.preventDefault();
         if (!value.trim()) return;
 
-        console.log(addTodo);
         addTodo(value);
         setValue('');
 };

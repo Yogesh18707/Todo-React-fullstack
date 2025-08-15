@@ -25,6 +25,9 @@ function SignupForm({ onSignup }) {
 
                 alert("Signup successful!");
                 onSignup(data.token, data.user);
+
+                // Redirect to login page
+                navigate('/login');
             } else {
                 alert(data.message || 'Signup failed');
             }
@@ -34,7 +37,10 @@ function SignupForm({ onSignup }) {
         }
     };
 
+
     return (
+        <div>
+            <h1 style={{color:"white"}}>SignUp to Login now!</h1>
         <form onSubmit={handleSubmit} className="auth-form">
             <h2>Sign Up</h2>
             <input
@@ -70,6 +76,7 @@ function SignupForm({ onSignup }) {
                 </button>
             </div>
         </form>
+        </div>
     );
 }
 

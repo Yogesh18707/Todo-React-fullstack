@@ -8,40 +8,31 @@ function TodoPage({ token, setToken, setView }) {
     const [editText, setEditText] = useState('');
     const navigate = useNavigate();
 
-    // Load todos from localStorage first
-    useEffect(() => {
-        const storedTodos = localStorage.getItem('todos');
-        if (storedTodos) {
-            setTodos(JSON.parse(storedTodos));
-        }
+    const API_BASE = 'http://localhost:5000/todos';
+    const API_KEY = 'e4d2b7c9f4a84c9f9a96c27f53dcd2b7'; // Replace with actual API key
 
-        // Then fetch from backend
-        fetch('http://localhost:5000/todos', {
-            headers: { Authorization: `Bearer ${token}` },
+    // Fetch todos from backend
+    useEffect(() => {
+        fetch(API_BASE, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'x-api-key': API_KEY
+            },
         })
             .then(res => res.json())
             .then(data => {
-                if (data.todos) {
-                    setTodos(data.todos);
-                }
+                if (data.todos) setTodos(data.todos);
             })
             .catch(err => console.error('Error fetching todos:', err));
     }, [token]);
 
-    // Save todos to localStorage whenever they change
-    useEffect(() => {
-        localStorage.setItem('todos', JSON.stringify(todos));
-    }, [todos]);
-
     const addTodo = (text) => {
-        const newTodo = { text, completed: false };
-        setTodos([...todos, newTodo]);
-
-        fetch('http://localhost:5000/todos', {
+        fetch(API_BASE, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
+                'x-api-key': API_KEY
             },
             body: JSON.stringify({ text }),
         })
@@ -52,28 +43,40 @@ function TodoPage({ token, setToken, setView }) {
 
     const deleteTodo = (index) => {
         const todoId = todos[index]._id;
-        setTodos(todos.filter((_, i) => i !== index));
-
-        fetch(`http://localhost:5000/todos/${todoId}`, {
+        fetch(`${API_BASE}/${todoId}`, {
             method: 'DELETE',
-            headers: { Authorization: `Bearer ${token}` },
-        }).catch(err => console.error('Error deleting todo:', err));
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'x-api-key': API_KEY
+            },
+        })
+            .then(() => {
+                setTodos(prev => prev.filter((_, i) => i !== index));
+            })
+            .catch(err => console.error('Error deleting todo:', err));
     };
 
     const toggleComplete = (index) => {
-        const updatedTodos = [...todos];
-        updatedTodos[index].completed = !updatedTodos[index].completed;
-        setTodos(updatedTodos);
+        const todoId = todos[index]._id;
+        const updatedStatus = !todos[index].completed;
 
-        const todoId = updatedTodos[index]._id;
-        fetch(`http://localhost:5000/todos/${todoId}`, {
+        fetch(`${API_BASE}/${todoId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
+                'x-api-key': API_KEY
             },
-            body: JSON.stringify({ completed: updatedTodos[index].completed }),
-        }).catch(err => console.error('Error updating todo:', err));
+            body: JSON.stringify({ completed: updatedStatus }),
+        })
+            .then(() => {
+                setTodos(prev => {
+                    const updated = [...prev];
+                    updated[index].completed = updatedStatus;
+                    return updated;
+                });
+            })
+            .catch(err => console.error('Error updating todo:', err));
     };
 
     const startEditing = (index) => {
@@ -82,26 +85,34 @@ function TodoPage({ token, setToken, setView }) {
     };
 
     const saveEdit = (index) => {
-        const updatedTodos = [...todos];
-        updatedTodos[index].text = editText;
-        setTodos(updatedTodos);
-        setEditingIndex(null);
+        const todoId = todos[index]._id;
 
-        const todoId = updatedTodos[index]._id;
-        fetch(`http://localhost:5000/todos/${todoId}`, {
+        fetch(`${API_BASE}/${todoId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
+                'x-api-key': API_KEY
             },
             body: JSON.stringify({ text: editText }),
-        }).catch(err => console.error('Error saving edit:', err));
+        })
+            .then(() => {
+                setTodos(prev => {
+                    const updated = [...prev];
+                    updated[index].text = editText;
+                    return updated;
+                });
+                setEditingIndex(null);
+            })
+            .catch(err => console.error('Error saving edit:', err));
     };
 
     const handleLogout = () => {
         setToken(null);
-        localStorage.removeItem('token');
+        localStorage.removeItem('token'); // keep token removal
+        sessionStorage.clear();
         navigate('/login');
+
     };
 
     return (
@@ -115,7 +126,7 @@ function TodoPage({ token, setToken, setView }) {
 
             <ul>
                 {todos.map((todo, index) => (
-                    <li key={index} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <li key={todo._id || index} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                         <input
                             type="checkbox"
                             checked={todo.completed}

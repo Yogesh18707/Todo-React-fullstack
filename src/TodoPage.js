@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import TodoForm from './TodoForm';
 import { useNavigate } from "react-router-dom";
 
@@ -9,10 +9,9 @@ function TodoPage({ token, setToken, setView }) {
     const navigate = useNavigate();
 
     const API_BASE = 'http://localhost:5000/todos';
-    const API_KEY = 'e4d2b7c9f4a84c9f9a96c27f53dcd2b7'; // Replace with actual API key
+    const API_KEY = 'e4d2b7c9f4a84c9f9a96c27f53dcd2b7';
 
-    // Fetch todos from backend
-    useEffect(() => {
+    const fetchTodos = useCallback(() => {
         fetch(API_BASE, {
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -21,10 +20,20 @@ function TodoPage({ token, setToken, setView }) {
         })
             .then(res => res.json())
             .then(data => {
-                if (data.todos) setTodos(data.todos);
+                if (Array.isArray(data)) {
+                    setTodos(data);
+                } else if (data.todos) {
+                    setTodos(data.todos);
+                } else {
+                    setTodos([]);
+                }
             })
             .catch(err => console.error('Error fetching todos:', err));
-    }, [token]);
+    },[token]);
+
+    useEffect(() => {
+        fetchTodos();
+    }, [fetchTodos]);
 
     const addTodo = (text) => {
         fetch(API_BASE, {
@@ -36,8 +45,7 @@ function TodoPage({ token, setToken, setView }) {
             },
             body: JSON.stringify({ text }),
         })
-            .then(res => res.json())
-            .then(data => setTodos(data.todos || []))
+            .then(() => fetchTodos())
             .catch(err => console.error('Error adding todo:', err));
     };
 
@@ -50,9 +58,7 @@ function TodoPage({ token, setToken, setView }) {
                 'x-api-key': API_KEY
             },
         })
-            .then(() => {
-                setTodos(prev => prev.filter((_, i) => i !== index));
-            })
+            .then(() => fetchTodos())
             .catch(err => console.error('Error deleting todo:', err));
     };
 
@@ -69,13 +75,7 @@ function TodoPage({ token, setToken, setView }) {
             },
             body: JSON.stringify({ completed: updatedStatus }),
         })
-            .then(() => {
-                setTodos(prev => {
-                    const updated = [...prev];
-                    updated[index].completed = updatedStatus;
-                    return updated;
-                });
-            })
+            .then(() => fetchTodos())
             .catch(err => console.error('Error updating todo:', err));
     };
 
@@ -97,22 +97,18 @@ function TodoPage({ token, setToken, setView }) {
             body: JSON.stringify({ text: editText }),
         })
             .then(() => {
-                setTodos(prev => {
-                    const updated = [...prev];
-                    updated[index].text = editText;
-                    return updated;
-                });
+                fetchTodos();
                 setEditingIndex(null);
             })
             .catch(err => console.error('Error saving edit:', err));
     };
 
+    // ✅ Logout
     const handleLogout = () => {
         setToken(null);
-        localStorage.removeItem('token'); // keep token removal
+        localStorage.removeItem('token');
         sessionStorage.clear();
         navigate('/login');
-
     };
 
     return (

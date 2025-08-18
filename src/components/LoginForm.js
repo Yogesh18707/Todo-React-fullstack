@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
-import {  useNavigate } from 'react-router-dom';
-
+import { useNavigate } from 'react-router-dom';
 
 function LoginForm() {
     const [username, setUsername] = useState('');
-    console.log(username)
     const [password, setPassword] = useState('');
-    let navigate = useNavigate();
+    const navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -18,67 +16,59 @@ function LoginForm() {
                 body: JSON.stringify({ username, password })
             });
 
-            const data = await res.json();
+            if (res.ok) {
+                const data = await res.json();
 
-            console.log('data',data)
+                if (data.token) {
+                    localStorage.setItem("token", data.token);
 
-            if (data.token) {
-                localStorage.setItem("token", data.token);
-                console.log('tests11111')
+                    console.log('hello')
 
-                if (localStorage.getItem('token')){
-                    navigate("/todos");
-                    // const x = () =>{
-                    //     console.log('navigatekkkkk')
-                    //     document.href="/todos"
-                    //     // navigate("/todos")
-                    // }
-                    // x()
+                    document.location.href = ("/todos");
+                } else {
+                    console.error("Token not found in response.");
                 }
-
-                console.log('test333333333333333')
-
             } else {
-                console.error(data.message || "Login failed");
+                // Handle non-200 responses (e.g., 401 Unauthorized)
+                const errorData = await res.json();
+                console.error("Login failed:", errorData.message);
             }
         } catch (err) {
-           console.error("Server error");
+            console.error("Server error:", err);
         }
     };
 
     return (
         <div>
             <h1 style={{color:"white"}}>Welcome to the To-Do app</h1>
-        <form onSubmit={handleLogin} className="login-form">
-            <h2>Login</h2>
-
-            <input
-                type="text"
-                placeholder="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                required
-            />
-            <input
-                required
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                autoComplete="off"
-            />
-
-            <div className="button-group">
-                <button type="submit" className="login-btn">Login</button>
-                <button
-                    type="button"
-                    className="signup-btn"
-                    onClick={() => navigate("/signup")}
-                >
-                    Sign Up
-                </button>
-            </div>
-        </form>
+            <form onSubmit={handleLogin} className="login-form">
+                <h2>Login</h2>
+                <input
+                    type="text"
+                    placeholder="Username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    required
+                />
+                <input
+                    required
+                    type="password"
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    autoComplete="off"
+                />
+                <div className="button-group">
+                    <button type="submit" className="login-btn">Login</button>
+                    <button
+                        type="button"
+                        className="signup-btn"
+                        onClick={() => navigate("/signup")}
+                    >
+                        Sign Up
+                    </button>
+                </div>
+            </form>
         </div>
     );
 }

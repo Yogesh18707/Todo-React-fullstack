@@ -1,0 +1,22 @@
+{
+  "version": 2,
+  "builds": [{
+    "src": "todo-react/package.json",
+    "use": "@vercel/static-build"
+  },
+{
+  "src": "backend/index.js",
+  "use": "@vercel/node"
+}
+    ],
+  "router": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/backend/index.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/todo-react/$1"
+    }
+  ]
+}

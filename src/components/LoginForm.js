@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Eye, EyeOff} from "lucide-react";
 
 function LoginForm() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();
 
         try {
-            const res = await fetch("http://localhost:5000/api/auth/login", {
+            const res = await fetch("https://todo-backend-ki9o.onrender.com/api/auth/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ username, password })
@@ -50,14 +52,23 @@ function LoginForm() {
                     onChange={(e) => setUsername(e.target.value)}
                     required
                 />
+                <div className="relative">
                 <input
                     required
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     placeholder="Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     autoComplete="off"
                 />
+                <button
+                type="button"
+                className="absolute"
+                onClick={() => setShowPassword(!showPassword)}
+                >
+                    {showPassword ? <EyeOff size={20}/> : <Eye size={20}/> }
+                </button>
+                </div>
                 <div className="button-group">
                     <button type="submit" className="login-btn">Login</button>
                     <button

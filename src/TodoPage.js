@@ -6,9 +6,10 @@ function TodoPage({ token, setToken, setView }) {
     const [todos, setTodos] = useState([]);
     const [editingIndex, setEditingIndex] = useState(null);
     const [editText, setEditText] = useState('');
+    const [username, setUsername] = useState("");
     const navigate = useNavigate();
 
-    const API_BASE = 'http://localhost:5000/todos';
+    const API_BASE = 'https://todo-backend-ki9o.onrender.com/todos';
     const API_KEY = 'e4d2b7c9f4a84c9f9a96c27f53dcd2b7';
 
     const fetchTodos = useCallback(() => {
@@ -34,6 +35,13 @@ function TodoPage({ token, setToken, setView }) {
     useEffect(() => {
         fetchTodos();
     }, [fetchTodos]);
+
+    useEffect(() => {
+        const storedName = localStorage.getItem("username");
+        if (storedName){
+            setUsername(storedName)
+        }
+    }, []);
 
     const addTodo = (text) => {
         fetch(API_BASE, {
@@ -113,6 +121,7 @@ function TodoPage({ token, setToken, setView }) {
 
     return (
         <div className="app">
+            <h3 className="text-xl font-bold">Welcome {username}</h3>
             <button onClick={handleLogout} className="logout-btn">
                 Logout
             </button>

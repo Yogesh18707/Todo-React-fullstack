@@ -12,7 +12,7 @@ function LoginForm() {
         e.preventDefault();
 
         try {
-            const res = await fetch("https://todo-backend-ki9o.onrender.com/api/auth/login", {
+            const res = await fetch("http://todo-backend-ki9o.onrender.com/api/auth/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ username, password })

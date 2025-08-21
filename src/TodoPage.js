@@ -8,8 +8,8 @@ function TodoPage({ token, setToken, setView }) {
     const [editText, setEditText] = useState('');
     const [username, setUsername] = useState("");
     const navigate = useNavigate();
-    require('dotenv').config();
-    const API_BASE =  `${process.env.BASE_URL}/api/todos`;
+
+    const API_BASE =  `https://todo-backend-ki9o.onrender.com/api/todos`;
     const API_KEY = 'e4d2b7c9f4a84c9f9a96c27f53dcd2b7';
 
     const fetchTodos = useCallback(() => {

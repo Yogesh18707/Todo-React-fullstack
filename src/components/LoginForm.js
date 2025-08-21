@@ -7,13 +7,12 @@ function LoginForm() {
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
-    require('dotenv').config();
 
     const handleLogin = async (e) => {
         e.preventDefault();
 
         try {
-            const res = await fetch(`${process.env.BASE_URL}/auth/login`, {
+            const res = await fetch(`https://todo-backend-ki9o.onrender.com/auth/login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ username, password })

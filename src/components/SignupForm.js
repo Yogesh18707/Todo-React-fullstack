@@ -6,12 +6,12 @@ function SignupForm({ onSignup }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
-    require('dotenv').config();
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
-            const res = await fetch(`${process.env.BASE_URL}/auth/signup`, {
+            const res = await fetch(`https://todo-backend-ki9o.onrender.com/auth/signup`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username: name, password })

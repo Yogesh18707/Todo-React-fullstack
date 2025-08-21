@@ -1,17 +1,19 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import TodoForm from './TodoForm';
 import { useNavigate } from "react-router-dom";
 
-function TodoPage({ token, setToken, setView }) {
+function TodoPage({ token, setToken }) {
     const [todos, setTodos] = useState([]);
     const [editingIndex, setEditingIndex] = useState(null);
     const [editText, setEditText] = useState('');
     const [username, setUsername] = useState("");
     const navigate = useNavigate();
 
-    const API_BASE =  `https://todo-backend-ki9o.onrender.com/api/todos`;
-    const API_KEY = 'e4d2b7c9f4a84c9f9a96c27f53dcd2b7';
+    // ✅ Load from .env
+    const API_BASE = process.env.REACT_APP_API_BASE;
+    const API_KEY = process.env.REACT_APP_API_KEY;
 
+    // ✅ Fetch Todos
     const fetchTodos = useCallback(() => {
         fetch(API_BASE, {
             headers: {
@@ -30,7 +32,7 @@ function TodoPage({ token, setToken, setView }) {
                 }
             })
             .catch(err => console.error('Error fetching todos:', err));
-    },[token]);
+    }, [token, API_BASE, API_KEY]);
 
     useEffect(() => {
         fetchTodos();
@@ -38,11 +40,12 @@ function TodoPage({ token, setToken, setView }) {
 
     useEffect(() => {
         const storedName = localStorage.getItem("username");
-        if (storedName){
-            setUsername(storedName)
+        if (storedName) {
+            setUsername(storedName);
         }
     }, []);
 
+    // ✅ Add Todo
     const addTodo = (text) => {
         fetch(API_BASE, {
             method: 'POST',
@@ -57,6 +60,7 @@ function TodoPage({ token, setToken, setView }) {
             .catch(err => console.error('Error adding todo:', err));
     };
 
+    // ✅ Delete Todo
     const deleteTodo = (index) => {
         const todoId = todos[index]._id;
         fetch(`${API_BASE}/${todoId}`, {
@@ -70,6 +74,7 @@ function TodoPage({ token, setToken, setView }) {
             .catch(err => console.error('Error deleting todo:', err));
     };
 
+    // ✅ Toggle Complete
     const toggleComplete = (index) => {
         const todoId = todos[index]._id;
         const updatedStatus = !todos[index].completed;
@@ -87,6 +92,7 @@ function TodoPage({ token, setToken, setView }) {
             .catch(err => console.error('Error updating todo:', err));
     };
 
+    // ✅ Edit Todo
     const startEditing = (index) => {
         setEditingIndex(index);
         setEditText(todos[index].text);
@@ -152,9 +158,9 @@ function TodoPage({ token, setToken, setView }) {
                             </>
                         ) : (
                             <>
-                                <span style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}>
-                                    {todo.text}
-                                </span>
+                <span style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}>
+                  {todo.text}
+                </span>
                                 <button onClick={() => startEditing(index)}>✎</button>
                             </>
                         )}

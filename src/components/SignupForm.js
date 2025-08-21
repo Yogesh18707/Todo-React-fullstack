@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function SignupForm({ onSignup }) {
+function SignupForm() {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -11,23 +11,19 @@ function SignupForm({ onSignup }) {
         e.preventDefault();
 
         try {
-            const res = await fetch(`https://todo-backend-ki9o.onrender.com/auth/signup`, {
+            const res = await fetch('https://todo-backend-ki9o.onrender.com/api/auth/signup', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username: name, password })
+                body: JSON.stringify({ username: name, email, password })
             });
 
             const data = await res.json();
 
-            if (res.ok && data.token && data.user) {
-                localStorage.setItem('token', data.token);
-                localStorage.setItem('username', data.user.username);
-
-                alert("Signup successful!");
-                onSignup(data.token, data.user);
-
-                // Redirect to login page
+            if (res.ok) {
+                alert("Signup successful! Please login.");
+                // ✅ redirect to login page after successful signup
                 navigate('/login');
+                document.location.href="/login";
             } else {
                 alert(data.message || 'Signup failed');
             }
@@ -36,7 +32,6 @@ function SignupForm({ onSignup }) {
             alert("Error connecting to server.");
         }
     };
-
 
     return (
         <div>
@@ -67,13 +62,7 @@ function SignupForm({ onSignup }) {
 
             <div className="button-group">
                 <button type="submit" className="signup-btn">Sign Up</button>
-                <button
-                    type="button"
-                    className="login-btn"
-                    onClick={() => navigate('/login')}
-                >
-                    Login
-                </button>
+
             </div>
         </form>
         </div>

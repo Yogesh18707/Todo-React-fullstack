@@ -12,7 +12,7 @@ function LoginForm() {
         e.preventDefault();
 
         try {
-            const res = await fetch(`https://todo-backend-ki9o.onrender.com/auth/login`, {
+            const res = await fetch("https://todo-backend-ki9o.onrender.com/api/auth/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ username, password })
@@ -24,7 +24,6 @@ function LoginForm() {
                 if (data.token) {
                     localStorage.setItem("token", data.token);
 
-                    console.log('hello')
 
                     document.location.href = ("/todos");
                 } else {

@@ -9,7 +9,6 @@ function TodoPage({ token, setToken }) {
     const [username, setUsername] = useState("");
     const navigate = useNavigate();
 
-    // ✅ Load from .env
     const API_BASE = process.env.REACT_APP_API_BASE;
     const API_KEY = process.env.REACT_APP_API_KEY;
 
@@ -40,9 +39,7 @@ function TodoPage({ token, setToken }) {
 
     useEffect(() => {
         const storedName = localStorage.getItem("username");
-        if (storedName) {
-            setUsername(storedName);
-        }
+        if (storedName) setUsername(storedName);
     }, []);
 
     // ✅ Add Todo
@@ -100,7 +97,6 @@ function TodoPage({ token, setToken }) {
 
     const saveEdit = (index) => {
         const todoId = todos[index]._id;
-
         fetch(`${API_BASE}/${todoId}`, {
             method: 'PUT',
             headers: {
@@ -128,9 +124,7 @@ function TodoPage({ token, setToken }) {
     return (
         <div className="app">
             <h3 className="text-xl font-bold">Welcome {username}</h3>
-            <button onClick={handleLogout} className="logout-btn">
-                Logout
-            </button>
+            <button onClick={handleLogout} className="logout-btn">Logout</button>
             <h1>📝 Todo App</h1>
 
             <TodoForm addTodo={addTodo} />

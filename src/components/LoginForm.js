@@ -30,7 +30,6 @@ function LoginForm() {
                     console.error("Token not found in response.");
                 }
             } else {
-                // Handle non-200 responses (e.g., 401 Unauthorized)
                 const errorData = await res.json();
                 console.error("Login failed:", errorData.message);
             }

@@ -1,18 +1,17 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import TodoForm from './TodoForm';
 import { useNavigate } from "react-router-dom";
 
-function TodoPage({ token, setToken }) {
+function TodoPage({ token, setToken, setView }) {
     const [todos, setTodos] = useState([]);
     const [editingIndex, setEditingIndex] = useState(null);
     const [editText, setEditText] = useState('');
     const [username, setUsername] = useState("");
     const navigate = useNavigate();
 
-    const API_BASE = process.env.REACT_APP_API_BASE;
-    const API_KEY = process.env.REACT_APP_API_KEY;
+    const API_BASE = 'https://todo-backend-ki9o.onrender.com/todos';
+    const API_KEY = 'e4d2b7c9f4a84c9f9a96c27f53dcd2b7';
 
-    // ✅ Fetch Todos
     const fetchTodos = useCallback(() => {
         fetch(API_BASE, {
             headers: {
@@ -22,6 +21,7 @@ function TodoPage({ token, setToken }) {
         })
             .then(res => res.json())
             .then(data => {
+
                 if (Array.isArray(data)) {
                     setTodos(data);
                 } else if (data.todos) {
@@ -31,7 +31,7 @@ function TodoPage({ token, setToken }) {
                 }
             })
             .catch(err => console.error('Error fetching todos:', err));
-    }, [token, API_BASE, API_KEY]);
+    },[token]);
 
     useEffect(() => {
         fetchTodos();
@@ -39,10 +39,11 @@ function TodoPage({ token, setToken }) {
 
     useEffect(() => {
         const storedName = localStorage.getItem("username");
-        if (storedName) setUsername(storedName);
+        if (storedName){
+            setUsername(storedName)
+        }
     }, []);
 
-    // ✅ Add Todo
     const addTodo = (text) => {
         fetch(API_BASE, {
             method: 'POST',
@@ -57,7 +58,6 @@ function TodoPage({ token, setToken }) {
             .catch(err => console.error('Error adding todo:', err));
     };
 
-    // ✅ Delete Todo
     const deleteTodo = (index) => {
         const todoId = todos[index]._id;
         fetch(`${API_BASE}/${todoId}`, {
@@ -71,7 +71,6 @@ function TodoPage({ token, setToken }) {
             .catch(err => console.error('Error deleting todo:', err));
     };
 
-    // ✅ Toggle Complete
     const toggleComplete = (index) => {
         const todoId = todos[index]._id;
         const updatedStatus = !todos[index].completed;
@@ -89,7 +88,6 @@ function TodoPage({ token, setToken }) {
             .catch(err => console.error('Error updating todo:', err));
     };
 
-    // ✅ Edit Todo
     const startEditing = (index) => {
         setEditingIndex(index);
         setEditText(todos[index].text);
@@ -97,6 +95,7 @@ function TodoPage({ token, setToken }) {
 
     const saveEdit = (index) => {
         const todoId = todos[index]._id;
+
         fetch(`${API_BASE}/${todoId}`, {
             method: 'PUT',
             headers: {
@@ -124,7 +123,9 @@ function TodoPage({ token, setToken }) {
     return (
         <div className="app">
             <h3 className="text-xl font-bold">Welcome {username}</h3>
-            <button onClick={handleLogout} className="logout-btn">Logout</button>
+            <button onClick={handleLogout} className="logout-btn">
+                Logout
+            </button>
             <h1>📝 Todo App</h1>
 
             <TodoForm addTodo={addTodo} />
@@ -152,9 +153,9 @@ function TodoPage({ token, setToken }) {
                             </>
                         ) : (
                             <>
-                <span style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}>
-                  {todo.text}
-                </span>
+                                <span style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}>
+                                    {todo.text}
+                                </span>
                                 <button onClick={() => startEditing(index)}>✎</button>
                             </>
                         )}
